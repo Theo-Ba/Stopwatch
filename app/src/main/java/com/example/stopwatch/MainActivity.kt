@@ -20,12 +20,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var resetButton: Button
     private lateinit var timer: Chronometer
     private var stopped = true
+    private var currentTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate")
         setContentView(R.layout.activity_main)
         initializeWidgets()
+        currentTime = timer.base
         startButton.setOnClickListener {
             startTimer()
         }
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startTimer() {
         if(stopped) {
+            timer.base = currentTime
             timer.start()
             startButton.text = "STOP"
             stopped = false
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity() {
             startButton.text = "START"
             timer.stop()
             stopped = true
+            currentTime = timer.base
         }
     }
 
