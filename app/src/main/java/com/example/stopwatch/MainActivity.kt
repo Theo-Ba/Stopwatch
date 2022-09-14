@@ -3,6 +3,7 @@ package com.example.stopwatch
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.SystemClock
 import android.util.Log
 import android.widget.Button
 import android.widget.Chronometer
@@ -38,12 +39,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun resetTimer() {
-
+        timer.base = SystemClock.elapsedRealtime()
     }
 
     private fun startTimer() {
         if(stopped) {
-            timer.base = currentTime
+            timer.base = timer.base + (SystemClock.elapsedRealtime() - currentTime)
             timer.start()
             startButton.text = "STOP"
             stopped = false
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             startButton.text = "START"
             timer.stop()
             stopped = true
-            currentTime = timer.base
+            currentTime = SystemClock.elapsedRealtime()
         }
     }
 
