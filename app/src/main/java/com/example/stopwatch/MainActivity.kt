@@ -1,5 +1,6 @@
 package com.example.stopwatch
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -7,6 +8,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.widget.Button
 import android.widget.Chronometer
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.coroutines.NonCancellable.start
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var startButton: Button
     private lateinit var resetButton: Button
     private lateinit var timer: Chronometer
+    private lateinit var background: ConstraintLayout
     private var stopped = true
     private var currentTime = 0L
 
@@ -28,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onCreate")
         setContentView(R.layout.activity_main)
         initializeWidgets()
-        currentTime = timer.base
+        customizeWidgets()
+
         startButton.setOnClickListener {
             startTimer()
         }
@@ -36,6 +40,16 @@ class MainActivity : AppCompatActivity() {
         resetButton.setOnClickListener {
             resetTimer()
         }
+    }
+
+    private fun customizeWidgets() {
+        currentTime = timer.base
+        startButton.setBackgroundColor(Color.GREEN)
+        startButton.setTextColor(Color.BLACK)
+        resetButton.setBackgroundColor(Color.rgb(115, 11, 0))
+        resetButton.setTextColor(Color.BLACK)
+        background.setBackgroundColor(Color.BLACK)
+        timer.setTextColor(Color.WHITE)
     }
 
     private fun resetTimer() {
@@ -47,10 +61,12 @@ class MainActivity : AppCompatActivity() {
             timer.base = timer.base + (SystemClock.elapsedRealtime() - currentTime)
             timer.start()
             startButton.text = "STOP"
+            startButton.setBackgroundColor(Color.RED)
             stopped = false
         }
         else {
             startButton.text = "START"
+            startButton.setBackgroundColor(Color.GREEN)
             timer.stop()
             stopped = true
             currentTime = SystemClock.elapsedRealtime()
@@ -61,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         startButton = findViewById(R.id.button_main_start)
         resetButton = findViewById(R.id.button_main_reset)
         timer = findViewById(R.id.chronometer_main_stopwatch)
+        background = findViewById(R.id.constraintLayout_main_background)
     }
 
     override fun onStart() {
