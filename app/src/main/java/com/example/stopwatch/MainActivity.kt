@@ -56,12 +56,19 @@ class MainActivity : AppCompatActivity() {
 
         darkMode.setOnCheckedChangeListener { compoundButton, b ->
             if(b) {
-                startButton.setBackgroundColor(Color.GREEN)
                 startButton.setTextColor(Color.BLACK)
-                resetButton.setBackgroundColor(Color.rgb(115, 11, 0))
                 resetButton.setTextColor(Color.BLACK)
                 background.setBackgroundColor(Color.BLACK)
                 timer.setTextColor(Color.WHITE)
+                darkMode.setTextColor(Color.WHITE)
+            }
+            else
+            {
+                startButton.setTextColor(Color.WHITE)
+                resetButton.setTextColor(Color.WHITE)
+                background.setBackgroundColor(Color.WHITE)
+                timer.setTextColor(Color.BLACK)
+                darkMode.setTextColor(Color.BLACK)
             }
         }
     }
@@ -90,6 +97,9 @@ class MainActivity : AppCompatActivity() {
         settingsButton.text = ""
         settingsButton.setBackgroundColor(Color.GRAY)
         darkMode.toggle()
+        darkMode.setTextColor(Color.WHITE)
+        darkMode.text = "Dark Mode"
+        settingsGroup.isGone = true
     }
 
     private fun resetTimer() {
