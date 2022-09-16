@@ -54,7 +54,7 @@
         android:id="@+id/group_main_settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="switch_main_darkMode"
+        app:constraint_referenced_ids="switch_main_darkMode,switch_main_Zawarudo"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,6 +81,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.19999999"
         tools:text="Dark Mode" />
+
+    <Switch
+        android:id="@+id/switch_main_Zawarudo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch_main_darkMode" />
+
+    <Button
+        android:id="@+id/button_main_stopTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_main_start" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

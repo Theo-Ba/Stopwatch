@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var timerGroup: Group
     private lateinit var settingsGroup: Group
     private lateinit var darkMode: Switch
+    private lateinit var zawarudo: Switch
+    private lateinit var stopTime: Button
     private var stopped = true
     private var currentTime = 0L
     private var showingTimer = true
@@ -61,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                 background.setBackgroundColor(Color.BLACK)
                 timer.setTextColor(Color.WHITE)
                 darkMode.setTextColor(Color.WHITE)
+                zawarudo.setTextColor(Color.WHITE)
             }
             else
             {
@@ -69,7 +72,44 @@ class MainActivity : AppCompatActivity() {
                 background.setBackgroundColor(Color.WHITE)
                 timer.setTextColor(Color.BLACK)
                 darkMode.setTextColor(Color.BLACK)
+                zawarudo.setTextColor(Color.BLACK)
             }
+        }
+
+        zawarudo.setOnCheckedChangeListener { compoundButton, b ->
+            stopTime.isGone = !b
+        }
+
+        stopTime.setOnClickListener {
+            tokiWoTomare()
+        }
+    }
+
+    private fun tokiWoTomare() {
+        if(!stopped) {
+            timer.stop()
+            background.setBackgroundColor(Color.rgb(97,72,96))
+            startButton.setTextColor(Color.rgb(97,72,96))
+            resetButton.setTextColor(Color.rgb(97,72,96))
+            timer.setTextColor(Color.rgb(194, 165, 193))
+            startButton.setBackgroundColor(Color.rgb(59, 77, 59))
+            resetButton.setBackgroundColor(Color.rgb(71, 55, 54))
+            object : CountDownTimer(10000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+
+                }
+
+                override fun onFinish() {
+                    startButton.setTextColor(Color.BLACK)
+                    resetButton.setTextColor(Color.BLACK)
+                    background.setBackgroundColor(Color.BLACK)
+                    timer.setTextColor(Color.WHITE)
+                    darkMode.setTextColor(Color.WHITE)
+                    startButton.setBackgroundColor(Color.GREEN)
+                    resetButton.setBackgroundColor(Color.rgb(115, 11, 0))
+                    timer.start()
+                }
+            }.start()
         }
     }
 
@@ -100,6 +140,13 @@ class MainActivity : AppCompatActivity() {
         darkMode.setTextColor(Color.WHITE)
         darkMode.text = "Dark Mode"
         settingsGroup.isGone = true
+        stopTime.isGone = true
+        stopTime.text = "Toki wo Tomare"
+        zawarudo.text = "Za Warudo"
+        stopTime.setBackgroundColor(Color.YELLOW)
+        stopTime.setTextColor(Color.BLACK)
+        zawarudo.isChecked = false
+        zawarudo.setTextColor(Color.WHITE)
     }
 
     private fun resetTimer() {
@@ -132,6 +179,8 @@ class MainActivity : AppCompatActivity() {
         timerGroup = findViewById(R.id.group_main_showTimer)
         settingsGroup = findViewById(R.id.group_main_settings)
         darkMode = findViewById(R.id.switch_main_darkMode)
+        zawarudo = findViewById(R.id.switch_main_Zawarudo)
+        stopTime = findViewById(R.id.button_main_stopTime)
     }
 
     override fun onStart() {
