@@ -21,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     companion object {
         //all your static constants go here
         val TAG = "MainActivity"
+        val STATE_TIME = "current time"
+        val STATE_STOPPED = "stopped boolean"
+        val STATE_BASE = "base when stopped"
     }
 
     private lateinit var startButton: Button
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     private var stopped = true
     private var currentTime = 0L
     private var showingTimer = true
+    private var base = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initializeWidgets()
         customizeWidgets()
+
+        //restore instance state if it exists
+        if(savedInstanceState != null) {
+            currentTime = savedInstanceState.getLong(STATE_TIME)
+            stopped = savedInstanceState.getBoolean(STATE_STOPPED)
+            base = savedInstanceState.getLong(STATE_BASE)
+            if(!stopped) {
+                timer.base = SystemClock.elapsedRealtime() - currentTime
+                timer.start()
+                startButton.text = "STOP"
+                startButton.setBackgroundColor(Color.RED)
+                stopped = false
+            }
+            else {
+                timer.base = base - currentTime + SystemClock.elapsedRealtime()
+                timer.stop()
+                startButton.text = "START"
+                startButton.setBackgroundColor(Color.GREEN)
+                stopped = true
+                currentTime = SystemClock.elapsedRealtime()
+            }
+        }
 
         startButton.setOnClickListener {
             startTimer()
@@ -83,6 +109,18 @@ class MainActivity : AppCompatActivity() {
         stopTime.setOnClickListener {
             tokiWoTomare()
         }
+    }
+
+    // use this to preserve state through orientation changes
+    override fun onSaveInstanceState(outState: Bundle) {
+        //calculate the currentTime if it's currently running
+        if(!stopped)
+            currentTime = SystemClock.elapsedRealtime() - timer.base
+        // save key-value pairs to the bundle before the superclass call
+        outState.putLong(STATE_TIME, currentTime)
+        outState.putBoolean(STATE_STOPPED, stopped)
+        outState.putLong(STATE_BASE, base)
+        super.onSaveInstanceState(outState)
     }
 
     private fun tokiWoTomare() {
@@ -162,6 +200,7 @@ class MainActivity : AppCompatActivity() {
             stopped = false
         }
         else {
+            base = timer.base
             startButton.text = "START"
             startButton.setBackgroundColor(Color.GREEN)
             timer.stop()
